@@ -1,18 +1,18 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Neo4jService } from './neo4j/neo4j.service';
+
 
 @Injectable()
 export class AppService {
   constructor(private readonly neo4jService: Neo4jService) { }
 
   async getData() {
-    console.log(this.neo4jService)
-    const result = await this.neo4jService.read(`
-      MATCH (n:Investor)
-      RETURN n LIMIT 100
-    `, {})
-
-    return result.records.map(record => record.toObject())
+    const template = `
+    MATCH (n:Investor)
+    RETURN n as investor LIMIT 10
+    `
+    const data = await this.neo4jService.read(template, {})
+    return data.records.map(record => record.toObject())
   }
 }

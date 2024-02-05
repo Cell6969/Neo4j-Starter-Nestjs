@@ -1,18 +1,40 @@
 /* eslint-disable prettier/prettier */
 import neo4j, { Driver } from 'neo4j-driver';
-import { Neo4jConfig } from 'src/neo4j-config/neo4j-config.interface';
+import { Neo4jConnection } from './interface/neo4j-connection.interface';
+import {Logger} from '@nestjs/common';
 
-export const createDriver = async (config: Neo4jConfig) => {
+
+export const createDriver = async (connection: Neo4jConnection) => {
     // Create Driver Instance
     const driver: Driver = neo4j.driver(
-        `${config.scheme}://${config.host}:${config.port}`,
-        neo4j.auth.basic(config.username, config.password),
-        {
-            disableLosslessIntegers: config.disableLosslessIntegers
-        }
+        `${connection.scheme}://${connection.host}:${connection.port}`,
+        neo4j.auth.basic(connection.username, connection.password),
+        connection.config
     )
 
     await driver.verifyConnectivity()
+    Logger.log('Neo4j Connected')
 
     return driver;
+}
+
+export const isTruthy = (value: unknown): value is true => {
+    if (typeof value === 'boolean') {
+        return value
+    }
+
+    if (typeof value === 'string' && value === 'true') {
+        return true
+    }
+
+    return false
+}
+
+export const coerceNumber = (value: string | undefined): number | undefined => {
+    if (value !== undefined) {
+        const coerced = parseInt(value)
+        return Number.isNaN(coerced) ? undefined : coerced
+    }
+
+    return undefined
 }
