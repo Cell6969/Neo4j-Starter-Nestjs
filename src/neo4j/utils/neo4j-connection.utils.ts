@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import neo4j, { Driver } from 'neo4j-driver';
-import { Neo4jConnection } from './interface/neo4j-connection.interface';
+import { Neo4jConnection } from '../interface/neo4j-connection.interface';
 import {Logger} from '@nestjs/common';
 
 

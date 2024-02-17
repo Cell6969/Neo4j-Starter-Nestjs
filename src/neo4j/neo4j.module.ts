@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { Neo4jService } from './neo4j.service';
-import { coerceNumber, createDriver, isTruthy } from './neo4j.utils';
+import { coerceNumber, createDriver, isTruthy } from './utils/neo4j-connection.utils';
 import { NEO4J_OPTIONS, NEO4J_DRIVER } from './neo4j.constants';
 import { Neo4jConnection } from './interface/neo4j-connection.interface';
 import { ConfigModule, ConfigService } from '@nestjs/config';
